@@ -14,19 +14,23 @@ import java.awt.image.*;
 import java.util.*;
 
 public class Execute extends Game{
+	Random random = new Random();
 	ArrayList<Ficha> fichas = new ArrayList<Ficha>();
 	ArrayList<Ficha> playerFichas = new ArrayList<Ficha>();
 	ArrayList<Ficha> pcFichas = new ArrayList<Ficha>();
 	LinkedList<Ficha> enJuego = new LinkedList<Ficha>();
 	Background  background;
 	Sprite s1,t1;
+	Sprite tcomer;
 	boolean text= false;
 	int clickX,clickY;
 	int in; //recibe isValid para acomodar las fichas al inicioo al final 
+	int inicialComida = 100; 
+	int inicialComidaY = 500;
 	int rand_index, inicial=300; //inicial de la posicion de las fichas del jugador
 	int newX = 600; //x y y para las fichas en juego
 	int leftX = newX;
-	int rightX = leftX;
+	int rightX = newX;
 	int newY = 200;
 	int temp;
 
@@ -37,10 +41,11 @@ public class Execute extends Game{
 	    s1.setBackground(background);
 		
         // initialization of game variables
-		Random random = new Random();
+
 		//get all pieces into an array 
 		
 		t1 = new Sprite(getImage("images/tiraficha.png"),600,100);
+		tcomer = new Sprite(getImage("images/comer.png"),0,400);
 		
 		ArrayList<BufferedImage> imagesArray = new ArrayList<BufferedImage>();
 				imagesArray.add(getImage("images/piezas/cero-cero.jpg"));
@@ -121,55 +126,36 @@ public class Execute extends Game{
     		clickX = getMouseX();
     		clickY = getMouseY();
     		try {
-	    		if( clickX >= (int) playerFichas.get(0).img_ficha.getX() &&
-	    			clickX <= (int) playerFichas.get(0).img_ficha.getX() + playerFichas.get(0).img_ficha.getWidth() &&
-	    			clickY >= (int) playerFichas.get(0).img_ficha.getY() &&
-	    			clickY <= (int) playerFichas.get(0).img_ficha.getY() + playerFichas.get(0).img_ficha.getHeight()){
-	    			
-	    			//selecciono la primer ficha 
-	    			mover(elapsedTime,0);
-	    		}
-	    		else if(clickX >= (int) playerFichas.get(1).img_ficha.getX() &&
-	        			clickX <= (int) playerFichas.get(1).img_ficha.getX() + playerFichas.get(1).img_ficha.getWidth() &&
-	        			clickY >= (int) playerFichas.get(1).img_ficha.getY() &&
-	        			clickY <= (int) playerFichas.get(1).img_ficha.getY() + playerFichas.get(1).img_ficha.getHeight()) {
-	    			mover(elapsedTime,1);
-	    		}
-	    		else if(clickX >= (int) playerFichas.get(2).img_ficha.getX() &&
-	        			clickX <= (int) playerFichas.get(2).img_ficha.getX() + playerFichas.get(2).img_ficha.getWidth() &&
-	        			clickY >= (int) playerFichas.get(2).img_ficha.getY() &&
-	        			clickY <= (int) playerFichas.get(2).img_ficha.getY() + playerFichas.get(2).img_ficha.getHeight()) {
-	    			mover(elapsedTime,2);
-	    		}
-	    		else if(clickX >= (int) playerFichas.get(3).img_ficha.getX() &&
-	        			clickX <= (int) playerFichas.get(3).img_ficha.getX() + playerFichas.get(3).img_ficha.getWidth() &&
-	        			clickY >= (int) playerFichas.get(3).img_ficha.getY() &&
-	        			clickY <= (int) playerFichas.get(3).img_ficha.getY() + playerFichas.get(3).img_ficha.getHeight()) {
-	    			mover(elapsedTime,3);
-	    		}
-	    		else if(clickX >= (int) playerFichas.get(4).img_ficha.getX() &&
-	        			clickX <= (int) playerFichas.get(4).img_ficha.getX() + playerFichas.get(4).img_ficha.getWidth() &&
-	        			clickY >= (int) playerFichas.get(4).img_ficha.getY() &&
-	        			clickY <= (int) playerFichas.get(4).img_ficha.getY() + playerFichas.get(4).img_ficha.getHeight()) {
-	    			mover(elapsedTime,4);
-	    		}
-	    		else if(clickX >= (int) playerFichas.get(5).img_ficha.getX() &&
-	        			clickX <= (int) playerFichas.get(5).img_ficha.getX() + playerFichas.get(5).img_ficha.getWidth() &&
-	        			clickY >= (int) playerFichas.get(5).img_ficha.getY() &&
-	        			clickY <= (int) playerFichas.get(5).img_ficha.getY() + playerFichas.get(5).img_ficha.getHeight()) {
-	    			mover(elapsedTime,5);
-	    		}
-	    		else if(clickX >= (int) playerFichas.get(6).img_ficha.getX() &&
-	        			clickX <= (int) playerFichas.get(6).img_ficha.getX() + playerFichas.get(6).img_ficha.getWidth() &&
-	        			clickY >= (int) playerFichas.get(6).img_ficha.getY() &&
-	        			clickY <= (int) playerFichas.get(6).img_ficha.getY() + playerFichas.get(6).img_ficha.getHeight()) {
-	    			mover(elapsedTime,6);
-	    		}else {
-	    			//error sound
-	    			System.out.println("No valido we");
+	    		for(int i=0;i<playerFichas.size();i++) {
+	    			if( clickX >= (int) playerFichas.get(i).img_ficha.getX() &&
+	    	    			clickX <= (int) playerFichas.get(i).img_ficha.getX() + playerFichas.get(i).img_ficha.getWidth() &&
+	    	    			clickY >= (int) playerFichas.get(i).img_ficha.getY() &&
+	    	    			clickY <= (int) playerFichas.get(i).img_ficha.getY() + playerFichas.get(i).img_ficha.getHeight()){
+	    	    			//selecciono la primer ficha 
+	    	    			mover(elapsedTime,i);
+	    	    	}
 	    		}
     		}catch(Exception e) {
     			System.out.println("Ya no existe ficha en esas coordenadas");
+    		}
+    		if(clickX >= (int) tcomer.getX() &&
+        	   clickX <= (int) tcomer.getX() + tcomer.getWidth() &&
+        	   clickY >= (int) tcomer.getY() &&
+        	   clickY <= (int) tcomer.getY() + tcomer.getHeight()) {
+    			
+    			System.out.println("Comiendo...");
+    			try {
+	    			rand_index = random.nextInt(fichas.size()-1);
+	    			fichas.get(rand_index).img_ficha.setLocation(inicialComida, inicialComidaY);
+	    			inicialComida+=110;
+	    			if(inicialComida >1100) {
+	    				inicialComida = 100;
+	    				inicialComidaY -=100;
+	    			}
+	    			playerFichas.add(fichas.remove(rand_index));
+    			}catch(Exception e) {
+    				System.out.println("Te has acabado las fichas, tragon!");
+    			}
     		}
     	}
     	
@@ -215,11 +201,14 @@ public class Execute extends Game{
 	    
 	    if(text)s1.update(elapsedTime);
 	    
+	    tcomer.update(elapsedTime);
+	    
     }
 
     public void render(Graphics2D g) {
         // rendering to the screen
     	s1.render(g);
+    	tcomer.render(g);
     	if(text)t1.render(g);
     	for(Ficha ficha: playerFichas) {
     		if (ficha.visible) ficha.img_ficha.render(g);	
