@@ -3,9 +3,11 @@ package dominoPrueba;
 import com.golden.gamedev.Game;
 import com.golden.gamedev.GameLoader;
 import com.golden.gamedev.object.background.*;
+import com.golden.gamedev.util.ImageUtil;
 import com.golden.gamedev.engine.BaseIO;
 import com.golden.gamedev.engine.BaseAudio;
 import com.golden.gamedev.engine.BaseAudioRenderer;
+import com.golden.gamedev.engine.audio.WaveRenderer;
 import com.golden.gamedev.object.font.SystemFont;
 import com.golden.gamedev.object.*;
 import java.awt.Graphics2D;
@@ -20,6 +22,7 @@ public class Execute extends Game{
 	ArrayList<Ficha> pcFichas = new ArrayList<Ficha>();
 	LinkedList<Ficha> enJuego = new LinkedList<Ficha>();
 	Background  background;
+	WaveRenderer errorSound;
 	Sprite s1,t1;
 	Sprite tcomer;
 	boolean text= false;
@@ -41,11 +44,16 @@ public class Execute extends Game{
 	    s1.setBackground(background);
 		
         // initialization of game variables
+	    
+	    
+	    //sonido
+	  
+	    
+	    //letreros
+	    t1 = new Sprite(getImage("images/tiraficha.png"),600,100);
+		tcomer = new Sprite(getImage("images/comer.png"),0,0);
 
-		//get all pieces into an array 
-		
-		t1 = new Sprite(getImage("images/tiraficha.png"),600,100);
-		tcomer = new Sprite(getImage("images/comer.png"),0,400);
+		//get all pieces into an array
 		
 		ArrayList<BufferedImage> imagesArray = new ArrayList<BufferedImage>();
 				imagesArray.add(getImage("images/piezas/cero-cero.jpg"));
@@ -85,7 +93,7 @@ public class Execute extends Game{
 				//lleva el control de los numeros de cada ficha 
 				
 				der++;
-				if(der>6) {
+				if(der>6) { //asigna el valor de cada ficha
 					izq ++;
 					der = izq;
 				}
@@ -287,6 +295,7 @@ public class Execute extends Game{
 				playerFichas.get(n).img_ficha.setLocation(leftX, newY);
 				playerFichas.get(n).visible = false;
 				//rotar(playerFichas.get(n));
+				playerFichas.get(n).img_ficha = new Sprite( ImageUtil.rotate(playerFichas.get(n).img_ficha.getImage(),180),playerFichas.get(n).img_ficha.getX(),playerFichas.get(n).img_ficha.getY());
 				temp = playerFichas.get(n).der;
 		    	playerFichas.get(n).der = playerFichas.get(n).izq;
 		    	playerFichas.get(n).izq = temp;
@@ -294,17 +303,18 @@ public class Execute extends Game{
 				break;
 			case 3:
 				System.out.println("Inserta a la derecha");
-				rightX = rightX+playerFichas.get(n).img_ficha.getWidth();
+				rightX = rightX+enJuego.getLast().img_ficha.getWidth();
 				playerFichas.get(n).img_ficha.setLocation(rightX, newY);
 				playerFichas.get(n).visible = false;
 				enJuego.addLast(playerFichas.remove(n)); // saca la ficha para agregarla al inicio de las que estan en juego, o sea se agrega a la izq
 				break;
 			case 4:
 				System.out.println("Inserta a la derecha rotando");
-				rightX = rightX+playerFichas.get(n).img_ficha.getWidth();
+				rightX = rightX+enJuego.getLast().img_ficha.getWidth();
 				playerFichas.get(n).img_ficha.setLocation(rightX, newY);
 				playerFichas.get(n).visible = false;
 				//rotar(playerFichas.get(n));
+				playerFichas.get(n).img_ficha = new Sprite( ImageUtil.rotate(playerFichas.get(n).img_ficha.getImage(),180),playerFichas.get(n).img_ficha.getX(),playerFichas.get(n).img_ficha.getY());
 				temp = playerFichas.get(n).der;
 		    	playerFichas.get(n).der = playerFichas.get(n).izq;
 		    	playerFichas.get(n).izq = temp;
