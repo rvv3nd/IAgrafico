@@ -399,7 +399,7 @@ public class Execute extends Game{
 				System.out.println("Inserta a la derecha rotando");
 				if(pAtRight <5) {
 					rightX = ingresaDerRotando(enJuego,playerFichas,rightX,rightY,n);
-				}else if(pAtRight >=5 && pAtRight <7) {
+				}else if(pAtRight >=5 && pAtRight <=7) {
 					if(pAtRight == 5) rightX = rightX + (enJuego.getLast().img_ficha.getWidth()/2); 
 					rightY = ingresaDerHorizontalRotando(enJuego,playerFichas,rightX,rightY,n);
 				}
@@ -630,7 +630,6 @@ public class Execute extends Game{
 		GameLoader game = new GameLoader();
 		game.setup(new Execute(), new Dimension(1200,700), false);
 		game.start();
-		System.out.println("Hola perro mundo");
 	}
 
 }
