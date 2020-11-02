@@ -32,10 +32,14 @@ public class Execute extends Game{
 	int inicialComidaY = 500;
 	int rand_index, inicial=300; //inicial de la posicion de las fichas del jugador
 	int newX = 600; //x y y para las fichas en juego
+	int newY = 100;
 	int leftX = newX;
+	int leftY = newY;
 	int rightX = newX;
-	int newY = 200;
+	int rightY = newY;
 	int temp;
+	int pAtLeft = 0;
+	int pAtRight = 0;
 
 	
 	public void initResources() {
@@ -57,41 +61,68 @@ public class Execute extends Game{
 		
 		ArrayList<BufferedImage> imagesArray = new ArrayList<BufferedImage>();
 				imagesArray.add(getImage("images/piezas/cero-cero.jpg"));
+				imagesArray.add(getImage("images/piezas/cero-cero-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/cero-uno.jpg"));
+				imagesArray.add(getImage("images/piezas/cero-uno-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/cero-dos.jpg"));
+				imagesArray.add(getImage("images/piezas/cero-dos-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/cero-tres.jpg"));
+				imagesArray.add(getImage("images/piezas/cero-tres-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/cero-cuatro.jpg"));
+				imagesArray.add(getImage("images/piezas/cero-cuatro-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/cero-cinco.jpg"));
+				imagesArray.add(getImage("images/piezas/cero-cinco-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/cero-seis.jpg"));
+				imagesArray.add(getImage("images/piezas/cero-seis-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/uno-uno.jpg"));
+				imagesArray.add(getImage("images/piezas/uno-uno-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/uno-dos.jpg"));
+				imagesArray.add(getImage("images/piezas/uno-dos-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/uno-tres.jpg"));
+				imagesArray.add(getImage("images/piezas/uno-tres-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/uno-cuatro.jpg"));
+				imagesArray.add(getImage("images/piezas/uno-cuatro-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/uno-cinco.jpg"));
+				imagesArray.add(getImage("images/piezas/uno-cinco-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/uno-seis.jpg"));
+				imagesArray.add(getImage("images/piezas/uno-seis-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/dos-dos.jpg"));
+				imagesArray.add(getImage("images/piezas/dos-dos-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/dos-tres.jpg"));
+				imagesArray.add(getImage("images/piezas/dos-tres-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/dos-cuatro.jpg"));
+				imagesArray.add(getImage("images/piezas/dos-cuatro-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/dos-cinco.jpg"));
+				imagesArray.add(getImage("images/piezas/dos-cinco-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/dos-seis.jpg"));
+				imagesArray.add(getImage("images/piezas/dos-seis-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/tres-tres.jpg"));
+				imagesArray.add(getImage("images/piezas/tres-tres-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/tres-cuatro.jpg"));
+				imagesArray.add(getImage("images/piezas/tres-cuatro-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/tres-cinco.jpg"));
+				imagesArray.add(getImage("images/piezas/tres-cinco-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/tres-seis.jpg"));
+				imagesArray.add(getImage("images/piezas/tres-seis-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/cuatro-cuatro.jpg"));
+				imagesArray.add(getImage("images/piezas/cuatro-cuatro-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/cuatro-cinco.jpg"));
+				imagesArray.add(getImage("images/piezas/cuatro-cinco-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/cuatro-seis.jpg"));
+				imagesArray.add(getImage("images/piezas/cuatro-seis-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/cinco-cinco.jpg"));
+				imagesArray.add(getImage("images/piezas/cinco-cinco-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/cinco-seis.jpg"));
+				imagesArray.add(getImage("images/piezas/cinco-seis-turned-90.jpg"));
 				imagesArray.add(getImage("images/piezas/seis-seis.jpg"));
+				imagesArray.add(getImage("images/piezas/seis-seis-turned-90.jpg"));
 			
 			//put every image into an object Ficha
 			int izq = 0;
 			int der = 0;
-			for (BufferedImage image : imagesArray) {
-				fichas.add(new Ficha(izq,der,new Sprite (image)));
+			for (int i=0;i<imagesArray.size();i+=2) {
+				fichas.add(new Ficha(izq,der,new Sprite (imagesArray.get(i)),new Sprite (imagesArray.get(i+1))));
 				//lleva el control de los numeros de cada ficha 
-				
 				der++;
 				if(der>6) { //asigna el valor de cada ficha
 					izq ++;
@@ -264,13 +295,6 @@ public class Execute extends Game{
     	return 0;
     }
     
-    
-    private void rotar(Ficha ficha) {
-    	int temp = ficha.der;
-    	ficha.der = ficha.izq;
-    	ficha.izq = temp;
-    	//falta invertir la imagen
-    }
 	
     
     private void mover(long elapsedTime, int n) {
@@ -284,41 +308,74 @@ public class Execute extends Game{
 				break;
 			case 1:
 				System.out.println("Inserta a la izquierda");
-				leftX = leftX-playerFichas.get(n).img_ficha.getWidth();
-				playerFichas.get(n).img_ficha.setLocation(leftX, newY);
-				playerFichas.get(n).visible = false;
-				enJuego.addFirst(playerFichas.remove(n)); // saca la ficha para agregarla al inicio de las que estan en juego, o sea se agrega a la izq
+				if (pAtLeft <= 5) {
+					leftX = ingresaIzq(enJuego,playerFichas,leftX,leftY,n);
+				}
+				
+				else if(pAtLeft>5 && pAtLeft <=7) { //caso donde ya llegó al final horizontalmente
+					leftY = ingresaIzqHorizontal(enJuego,playerFichas,leftX,leftY,n);
+				}
+				else if(pAtLeft > 7 && pAtLeft <= 10){ // al limite "regresando" a la derecha entonces usar metodo de insertar derecha xd
+					leftX = ingresaIzq_Der(enJuego,playerFichas,leftX,leftY,n);
+				}
+				else if(pAtLeft >10 && pAtLeft <=12){ //de nuevo hacia abajo 
+					leftY = ingresaIzq_DerHorizontal(enJuego,playerFichas,leftX,leftY,n);
+				}
+				else if(pAtLeft > 12 && pAtLeft <= 14){ 
+					leftX = ingresaIzq(enJuego,playerFichas,leftX,leftY,n);
+				}else {
+					leftY = ingresaIzqHorizontalRotando(enJuego,playerFichas,leftX,leftY,n);
+				}
+				System.out.println(pAtLeft);
+				pAtLeft ++; //cada vez aumenta para seguir el paso de cuantas hay cada lado
 				break;
 			case 2: 
 				System.out.println("Inserta a la izquierda rotando");
-				leftX = leftX-playerFichas.get(n).img_ficha.getWidth();
-				playerFichas.get(n).img_ficha.setLocation(leftX, newY);
-				playerFichas.get(n).visible = false;
-				//rotar(playerFichas.get(n));
-				playerFichas.get(n).img_ficha = new Sprite( ImageUtil.rotate(playerFichas.get(n).img_ficha.getImage(),180),playerFichas.get(n).img_ficha.getX(),playerFichas.get(n).img_ficha.getY());
-				temp = playerFichas.get(n).der;
-		    	playerFichas.get(n).der = playerFichas.get(n).izq;
-		    	playerFichas.get(n).izq = temp;
-				enJuego.addFirst(playerFichas.remove(n)); // saca la ficha para agregarla al inicio y además tiene que rotar la imagen
+				if(pAtLeft <=5) {
+					leftX = ingresaIzqRotando(enJuego,playerFichas,leftX,leftY,n);
+				}
+				else if(pAtLeft>5 && pAtLeft <=7) { //caso donde ya llegó al final horizontalmente
+				//gira 90°
+					leftY = ingresaIzqHorizontalRotando(enJuego,playerFichas,leftX,leftY,n);
+				}else if(pAtLeft > 7 && pAtLeft <=10){
+					if (pAtLeft == 8)leftY = leftY + enJuego.getFirst().img_ficha.getHeight()/2;
+					leftX = ingresaIzq_DerRotando(enJuego,playerFichas,leftX,leftY,n);
+				}
+				else if(pAtLeft > 10 && pAtLeft <=12) {
+					leftY = ingresaIzq_DerHorizontalRotando(enJuego,playerFichas,leftX,leftY,n);
+				}
+				else if(pAtLeft > 12 && pAtLeft <= 14) {
+					//vuelve a meter hacia la izquierda normalito
+					leftX = ingresaIzqRotando(enJuego,playerFichas,leftX,leftY,n);
+				}
+				else {
+					leftY = ingresaIzqHorizontalRotando(enJuego,playerFichas,leftX,leftY,n);
+				}
+				System.out.println(pAtLeft);
+				pAtLeft ++;
 				break;
 			case 3:
 				System.out.println("Inserta a la derecha");
-				rightX = rightX+enJuego.getLast().img_ficha.getWidth();
-				playerFichas.get(n).img_ficha.setLocation(rightX, newY);
-				playerFichas.get(n).visible = false;
-				enJuego.addLast(playerFichas.remove(n)); // saca la ficha para agregarla al inicio de las que estan en juego, o sea se agrega a la izq
+				if(pAtRight <=5) {
+					rightX = ingresaDer(enJuego,playerFichas,rightX,rightY,n);
+				}
+				else if(pAtRight >5 && pAtRight <=7) {
+					if(pAtRight == 5) rightX = rightX + (enJuego.getLast().img_ficha.getWidth()/2); 
+					rightY = ingresaDerHorizontal(enJuego,playerFichas,rightX,rightY,n);
+				}
+				System.out.println(pAtRight);
+				pAtRight ++;
 				break;
 			case 4:
 				System.out.println("Inserta a la derecha rotando");
-				rightX = rightX+enJuego.getLast().img_ficha.getWidth();
-				playerFichas.get(n).img_ficha.setLocation(rightX, newY);
-				playerFichas.get(n).visible = false;
-				//rotar(playerFichas.get(n));
-				playerFichas.get(n).img_ficha = new Sprite( ImageUtil.rotate(playerFichas.get(n).img_ficha.getImage(),180),playerFichas.get(n).img_ficha.getX(),playerFichas.get(n).img_ficha.getY());
-				temp = playerFichas.get(n).der;
-		    	playerFichas.get(n).der = playerFichas.get(n).izq;
-		    	playerFichas.get(n).izq = temp;
-				enJuego.addLast(playerFichas.remove(n)); // saca la ficha para agregarla al inicio y además tiene que rotar la imagen
+				if(pAtRight <=5) {
+					rightX = ingresaDerRotando(enJuego,playerFichas,rightX,rightY,n);
+				}else if(pAtRight >5 && pAtRight <=7) {
+					if(pAtRight == 5) rightX = rightX + (enJuego.getLast().img_ficha.getWidth()/2); 
+					rightY = ingresaDerHorizontalRotando(enJuego,playerFichas,rightX,rightY,n);
+				}
+				System.out.println(pAtRight);
+				pAtRight++;
 				break;
 			}
 		}else {
@@ -343,6 +400,137 @@ public class Execute extends Game{
 				enJuego.addFirst(playerFichas.remove(n));
 			}
 		}
+		
+    }
+    private int ingresaIzq(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+		x = x-entrada.get(n).img_ficha.getWidth();
+		entrada.get(n).img_ficha.setLocation(x, y);
+		entrada.get(n).visible = false;
+		tablero.addFirst(entrada.remove(n));
+		return x;
+	}
+    
+    private int ingresaIzqRotando(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	x = x-entrada.get(n).img_ficha.getWidth();
+    	//rota imagen
+		entrada.get(n).img_ficha = new Sprite( ImageUtil.rotate(entrada.get(n).img_ficha.getImage(),180),x,y);
+		//rota datos
+		int tempo = entrada.get(n).der;
+    	entrada.get(n).der = entrada.get(n).izq;
+    	entrada.get(n).izq = tempo;
+    	entrada.get(n).img_ficha.setLocation(x, y);
+    	entrada.get(n).visible = false;
+		tablero.addFirst(entrada.remove(n));
+		return x;
+    }
+    
+    private int ingresaIzqHorizontal(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	y = y + tablero.getFirst().img_ficha.getHeight();
+    	entrada.get(n).img_ficha_turned_90 = new Sprite( ImageUtil.rotate(entrada.get(n).img_ficha_turned_90.getImage(),180),x,y);
+    	entrada.get(n).img_ficha.setImage(entrada.get(n).img_ficha_turned_90.getImage());
+    	entrada.get(n).img_ficha.setLocation(x, y);
+		entrada.get(n).visible = false;
+    	tablero.addFirst(entrada.remove(n));
+    	return y;
+    }
+    
+    private int ingresaIzqHorizontalRotando(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	y = y + tablero.getFirst().img_ficha.getHeight();
+    	//rota imagen 
+    	entrada.get(n).img_ficha.setImage(entrada.get(n).img_ficha_turned_90.getImage());
+    	//rota datos
+    	int temp = entrada.get(n).der;
+    	entrada.get(n).der = entrada.get(n).izq;
+    	entrada.get(n).izq = temp;
+    	entrada.get(n).img_ficha.setLocation(x, y);
+    	entrada.get(n).visible = false;
+		tablero.addFirst(entrada.remove(n));
+    	return y;
+    }
+    
+    private int ingresaIzq_Der(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	x = x + tablero.getFirst().img_ficha.getWidth();
+		entrada.get(n).visible = false;
+		//rotar(playerFichas.get(n));
+		entrada.get(n).img_ficha = new Sprite( ImageUtil.rotate(entrada.get(n).img_ficha.getImage(),180),x,y);
+		
+		tablero.addFirst(entrada.remove(n));
+		return x;
+    }
+    
+    private int ingresaIzq_DerRotando(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	x = x + tablero.getFirst().img_ficha.getWidth();
+		entrada.get(n).img_ficha.setLocation(x, y);
+		int temp = entrada.get(n).der;
+    	entrada.get(n).der = entrada.get(n).izq;
+    	entrada.get(n).izq = temp;
+		entrada.get(n).visible = false;
+		tablero.addFirst(entrada.remove(n));
+		return x;
+    }
+    private int ingresaIzq_DerHorizontal(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	y = y + tablero.getFirst().img_ficha.getHeight();
+    	entrada.get(n).img_ficha_turned_90 = new Sprite( ImageUtil.rotate(entrada.get(n).img_ficha_turned_90.getImage(),180),x,y);
+    	entrada.get(n).img_ficha.setImage(entrada.get(n).img_ficha_turned_90.getImage());
+    	entrada.get(n).img_ficha.setLocation(x, y);
+		entrada.get(n).visible = false;
+    	tablero.addFirst(entrada.remove(n));
+    	return y;
+    }
+    
+    private int ingresaIzq_DerHorizontalRotando(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	y = y + tablero.getFirst().img_ficha.getHeight();
+    	entrada.get(n).img_ficha.setImage(entrada.get(n).img_ficha_turned_90.getImage());
+    	//rota datos
+    	int temp = entrada.get(n).der;
+    	entrada.get(n).der = entrada.get(n).izq;
+    	entrada.get(n).izq = temp;
+    	entrada.get(n).img_ficha.setLocation(x, y);
+    	entrada.get(n).visible = false;
+		tablero.addFirst(entrada.remove(n));
+    	return y;
+    }
+    private int ingresaDer(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	x = x + tablero.getLast().img_ficha.getWidth();
+		entrada.get(n).img_ficha.setLocation(x, y);
+		entrada.get(n).visible = false;
+		tablero.addLast(entrada.remove(n));
+		return x;
+    }
+    
+    private int ingresaDerRotando(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	x = x + tablero.getLast().img_ficha.getWidth();
+		entrada.get(n).visible = false;
+		//rotar(playerFichas.get(n));
+		entrada.get(n).img_ficha = new Sprite( ImageUtil.rotate(entrada.get(n).img_ficha.getImage(),180),x,y);
+		int temp = entrada.get(n).der;
+    	entrada.get(n).der = entrada.get(n).izq;
+    	entrada.get(n).izq = temp;
+		tablero.addLast(entrada.remove(n));
+		return x;
+    }
+    
+    private int ingresaDerHorizontal(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	y =  y + tablero.getLast().img_ficha.getHeight();
+    	entrada.get(n).img_ficha.setImage(entrada.get(n).img_ficha_turned_90.getImage());
+    	entrada.get(n).img_ficha.setLocation(x, y);
+		entrada.get(n).visible = false;
+    	tablero.addLast(entrada.remove(n));
+    	return y;
+    }
+    private int ingresaDerHorizontalRotando(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	y = y + tablero.getLast().img_ficha.getHeight();
+    	//rota imagen 
+    	entrada.get(n).img_ficha_turned_90 = new Sprite( ImageUtil.rotate(entrada.get(n).img_ficha_turned_90.getImage(),180),x,y);
+    	entrada.get(n).img_ficha.setImage(entrada.get(n).img_ficha_turned_90.getImage());
+    	//rota datos
+    	int temp = entrada.get(n).der;
+    	entrada.get(n).der = entrada.get(n).izq;
+    	entrada.get(n).izq = temp;
+    	entrada.get(n).img_ficha.setLocation(x, y);
+    	entrada.get(n).visible = false;
+		tablero.addLast(entrada.remove(n));
+    	return y;
     }
 
 	public static void main(String[] args) {
