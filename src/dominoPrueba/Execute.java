@@ -32,7 +32,7 @@ public class Execute extends Game{
 	int inicialComidaY = 500;
 	int rand_index, inicial=300; //inicial de la posicion de las fichas del jugador
 	int newX = 600; //x y y para las fichas en juego
-	int newY = 100;
+	int newY = 50;
 	int leftX = newX;
 	int leftY = newY;
 	int rightX = newX;
@@ -316,25 +316,32 @@ public class Execute extends Game{
 					leftY = ingresaIzqHorizontal(enJuego,playerFichas,leftX,leftY,n);
 				}
 				else if(pAtLeft > 7 && pAtLeft <= 10){ // al limite "regresando" a la derecha entonces usar metodo de insertar derecha xd
+					if (pAtLeft == 8)leftY = leftY + enJuego.getFirst().img_ficha.getHeight()/2;
 					leftX = ingresaIzq_Der(enJuego,playerFichas,leftX,leftY,n);
 				}
-				else if(pAtLeft >10 && pAtLeft <=12){ //de nuevo hacia abajo 
+				else if(pAtLeft > 10 && pAtLeft <=12){ //de nuevo hacia abajo 
+					if (pAtLeft == 11) leftX = leftX + enJuego.getFirst().img_ficha.getWidth()/2;
 					leftY = ingresaIzq_DerHorizontal(enJuego,playerFichas,leftX,leftY,n);
 				}
-				else if(pAtLeft > 12 && pAtLeft <= 14){ 
+				else if(pAtLeft > 12 && pAtLeft <= 14){
+					if (pAtLeft == 13)leftY = leftY + enJuego.getFirst().img_ficha.getHeight()/2;
 					leftX = ingresaIzq(enJuego,playerFichas,leftX,leftY,n);
-				}else {
-					leftY = ingresaIzqHorizontalRotando(enJuego,playerFichas,leftX,leftY,n);
+				}else if(pAtLeft > 14 && pAtLeft <=16){
+					leftY = ingresaIzqHorizontal(enJuego,playerFichas,leftX,leftY,n);
+				}
+				else {
+					if (pAtLeft == 17)leftY = leftY + enJuego.getFirst().img_ficha.getHeight()/2;
+					leftX = ingresaIzq_Der(enJuego,playerFichas,leftX,leftY,n);
 				}
 				System.out.println(pAtLeft);
 				pAtLeft ++; //cada vez aumenta para seguir el paso de cuantas hay cada lado
 				break;
 			case 2: 
 				System.out.println("Inserta a la izquierda rotando");
-				if(pAtLeft <=5) {
+				if(pAtLeft <5) {
 					leftX = ingresaIzqRotando(enJuego,playerFichas,leftX,leftY,n);
 				}
-				else if(pAtLeft>5 && pAtLeft <=7) { //caso donde ya llegó al final horizontalmente
+				else if(pAtLeft>=5 && pAtLeft <=7) { //caso donde ya llegó al final horizontalmente
 				//gira 90°
 					leftY = ingresaIzqHorizontalRotando(enJuego,playerFichas,leftX,leftY,n);
 				}else if(pAtLeft > 7 && pAtLeft <=10){
@@ -342,37 +349,79 @@ public class Execute extends Game{
 					leftX = ingresaIzq_DerRotando(enJuego,playerFichas,leftX,leftY,n);
 				}
 				else if(pAtLeft > 10 && pAtLeft <=12) {
+					if (pAtLeft == 11) leftX = leftX + enJuego.getFirst().img_ficha.getWidth()/2;
 					leftY = ingresaIzq_DerHorizontalRotando(enJuego,playerFichas,leftX,leftY,n);
 				}
 				else if(pAtLeft > 12 && pAtLeft <= 14) {
 					//vuelve a meter hacia la izquierda normalito
+					if (pAtLeft == 13)leftY = leftY + enJuego.getFirst().img_ficha.getHeight()/2;
 					leftX = ingresaIzqRotando(enJuego,playerFichas,leftX,leftY,n);
 				}
-				else {
+				else if(pAtLeft > 14 && pAtLeft <=16){
 					leftY = ingresaIzqHorizontalRotando(enJuego,playerFichas,leftX,leftY,n);
+				}else {
+					if (pAtLeft == 17)leftY = leftY + enJuego.getFirst().img_ficha.getHeight()/2;
+					leftX = ingresaIzq_DerRotando(enJuego,playerFichas,leftX,leftY,n);
 				}
 				System.out.println(pAtLeft);
 				pAtLeft ++;
 				break;
 			case 3:
 				System.out.println("Inserta a la derecha");
-				if(pAtRight <=5) {
+				if(pAtRight <5) {
 					rightX = ingresaDer(enJuego,playerFichas,rightX,rightY,n);
 				}
-				else if(pAtRight >5 && pAtRight <=7) {
+				else if(pAtRight >=5 && pAtRight <=7) {
 					if(pAtRight == 5) rightX = rightX + (enJuego.getLast().img_ficha.getWidth()/2); 
 					rightY = ingresaDerHorizontal(enJuego,playerFichas,rightX,rightY,n);
+				}
+				else if(pAtRight > 7 && pAtRight <=10) {
+					if (pAtRight == 8)rightY = rightY + enJuego.getLast().img_ficha.getHeight()/2;
+					rightX = ingresaDer_Izq(enJuego,playerFichas,rightX,rightY,n);
+				}
+				else if(pAtRight > 10 && pAtRight <=12) {
+					//if (pAtRight == 11) rightX = rightX - enJuego.getLast().img_ficha.getWidth()/2;
+					rightY = ingresaDer_IzqHorizontal(enJuego,playerFichas,rightX,rightY,n);
+				}
+				else if(pAtRight > 12 && pAtRight <=14) {
+					rightX = ingresaDer(enJuego,playerFichas,rightX,rightY,n);
+				}
+				else if(pAtRight > 14 && pAtRight <=16) {
+					rightY = ingresaDerHorizontal(enJuego,playerFichas,rightX,rightY,n);
+				}else {
+					if (pAtRight == 17)rightY = rightY + enJuego.getLast().img_ficha.getHeight()/2;
+					rightX = ingresaDer_Izq(enJuego,playerFichas,rightX,rightY,n);
 				}
 				System.out.println(pAtRight);
 				pAtRight ++;
 				break;
 			case 4:
 				System.out.println("Inserta a la derecha rotando");
-				if(pAtRight <=5) {
+				if(pAtRight <5) {
 					rightX = ingresaDerRotando(enJuego,playerFichas,rightX,rightY,n);
-				}else if(pAtRight >5 && pAtRight <=7) {
+				}else if(pAtRight >=5 && pAtRight <7) {
 					if(pAtRight == 5) rightX = rightX + (enJuego.getLast().img_ficha.getWidth()/2); 
 					rightY = ingresaDerHorizontalRotando(enJuego,playerFichas,rightX,rightY,n);
+				}
+				else if(pAtRight > 7 && pAtRight <=10) {
+					if (pAtRight == 8)rightY = rightY + enJuego.getLast().img_ficha.getWidth()/2;
+					rightX = ingresaDer_IzqRotando(enJuego,playerFichas,rightX,rightY,n);
+				}
+				else if(pAtRight > 10 && pAtRight <=12) {
+					//if (pAtRight == 11) rightX = rightX + enJuego.getLast().img_ficha.getWidth()/2;
+					rightY = ingresaDer_IzqHorizontalRotando(enJuego,playerFichas,rightX,rightY,n);
+					
+				}
+				else if(pAtRight > 12 && pAtRight <=14) {
+					rightX = ingresaDerRotando(enJuego,playerFichas,rightX,rightY,n);	
+				}
+				else if(pAtRight > 14 && pAtRight <=16) {
+					if(pAtRight == 15) rightX = rightX + (enJuego.getLast().img_ficha.getWidth()/2); 
+					rightY = ingresaDerHorizontalRotando(enJuego,playerFichas,rightX,rightY,n);
+				}
+				else {
+					if (pAtRight == 17)rightY = rightY + enJuego.getLast().img_ficha.getWidth()/2;
+					rightX = ingresaDer_IzqRotando(enJuego,playerFichas,rightX,rightY,n);
 				}
 				System.out.println(pAtRight);
 				pAtRight++;
@@ -521,6 +570,48 @@ public class Execute extends Game{
     private int ingresaDerHorizontalRotando(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
     	y = y + tablero.getLast().img_ficha.getHeight();
     	//rota imagen 
+    	entrada.get(n).img_ficha_turned_90 = new Sprite( ImageUtil.rotate(entrada.get(n).img_ficha_turned_90.getImage(),180),x,y);
+    	entrada.get(n).img_ficha.setImage(entrada.get(n).img_ficha_turned_90.getImage());
+    	//rota datos
+    	int temp = entrada.get(n).der;
+    	entrada.get(n).der = entrada.get(n).izq;
+    	entrada.get(n).izq = temp;
+    	entrada.get(n).img_ficha.setLocation(x, y);
+    	entrada.get(n).visible = false;
+		tablero.addLast(entrada.remove(n));
+    	return y;
+    }
+    
+    private int ingresaDer_Izq(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	x = x - entrada.get(n).img_ficha.getWidth();
+    	entrada.get(n).visible = false;
+		entrada.get(n).img_ficha = new Sprite( ImageUtil.rotate(entrada.get(n).img_ficha.getImage(),180),x,y);
+		tablero.addLast(entrada.remove(n));
+		return x;
+    }
+    
+    private int ingresaDer_IzqRotando(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	x = x - entrada.get(n).img_ficha.getWidth();
+    	entrada.get(n).img_ficha.setLocation(x, y);
+		int temp = entrada.get(n).der;
+    	entrada.get(n).der = entrada.get(n).izq;
+    	entrada.get(n).izq = temp;
+		entrada.get(n).visible = false;
+		tablero.addLast(entrada.remove(n));
+    	return x;
+    }
+    
+    public int ingresaDer_IzqHorizontal(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	y = y + tablero.getLast().img_ficha.getHeight();
+    	entrada.get(n).img_ficha.setImage(entrada.get(n).img_ficha_turned_90.getImage());
+    	entrada.get(n).img_ficha.setLocation(x, y);
+		entrada.get(n).visible = false;
+    	tablero.addLast(entrada.remove(n));
+    	return y;
+    }
+    
+    public int ingresaDer_IzqHorizontalRotando(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
+    	y = y + tablero.getLast().img_ficha.getHeight();
     	entrada.get(n).img_ficha_turned_90 = new Sprite( ImageUtil.rotate(entrada.get(n).img_ficha_turned_90.getImage(),180),x,y);
     	entrada.get(n).img_ficha.setImage(entrada.get(n).img_ficha_turned_90.getImage());
     	//rota datos
