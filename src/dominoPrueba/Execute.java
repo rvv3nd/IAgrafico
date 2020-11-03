@@ -320,11 +320,11 @@ public class Execute extends Game{
     	ArrayList<Integer> validos = new ArrayList<Integer>();
     	if(tablero.getFirst().izq == entrada.der)//o sea que se puede ingresar al inicio 
     		validos.add(1); //1 indica que es movimiento valido a la izquierda
-    	if(tablero.getFirst().izq == entrada.izq)
+    	else if(tablero.getFirst().izq == entrada.izq)
     		validos.add(2); //2 indica que es movimiento valido a la izquierda pero rotando la imagen
     	if(tablero.getLast().der == entrada.izq)
     		validos.add(3); //3 indica que es movimiento valido a la derecha
-    	if(tablero.getLast().der == entrada.der)
+    	else if(tablero.getLast().der == entrada.der)
     		validos.add(4); //4 indica que es movimiento valido a la derecha pero rotando la imagen
     	
     	if (validos.isEmpty()) return 0;
