@@ -4,16 +4,17 @@ import com.golden.gamedev.Game;
 import com.golden.gamedev.GameLoader;
 import com.golden.gamedev.object.background.*;
 import com.golden.gamedev.util.ImageUtil;
-import com.golden.gamedev.engine.BaseIO;
-import com.golden.gamedev.engine.BaseAudio;
-import com.golden.gamedev.engine.BaseAudioRenderer;
-import com.golden.gamedev.engine.audio.WaveRenderer;
-import com.golden.gamedev.object.font.SystemFont;
+import com.golden.gamedev.engine.BaseIO; 
 import com.golden.gamedev.object.*;
 import java.awt.Graphics2D;
 import java.awt.Dimension;
 import java.awt.image.*;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 public class Execute extends Game{
 	Random random = new Random();
@@ -22,9 +23,12 @@ public class Execute extends Game{
 	ArrayList<Ficha> pcFichas = new ArrayList<Ficha>();
 	LinkedList<Ficha> enJuego = new LinkedList<Ficha>();
 	Background  background;
-	WaveRenderer errorSound;
+	Audio audioError,audioOk;
 	Sprite s1,t1;
 	Sprite tcomer;
+	boolean chooseDirection = false;
+	int choosed = 0;
+	Sprite l,r;
 	boolean text= false;
 	int clickX,clickY;
 	int in; //recibe isValid para acomodar las fichas al inicioo al final 
@@ -43,20 +47,29 @@ public class Execute extends Game{
 
 	
 	public void initResources() {
-
+		
+		try {
+			audioError =  new Audio("sounds/Frog.wav");
+			audioOk = new Audio("sounds/Pop.wav");
+		}catch(UnsupportedAudioFileException e){
+			
+		}catch(IOException e) {
+			
+		}catch(LineUnavailableException e) {
+			
+		}
 		s1 = new Sprite(getImage("images/background.jpg"));
 	    s1.setBackground(background);
 		
         // initialization of game variables
 	    
 	    
-	    //sonido
-	  
-	    
 	    //letreros
+		l = new Sprite(getImage("images/leftKey.png"),900,0);
+		r = new Sprite(getImage("images/rightKey.png"),1000,0);
 	    t1 = new Sprite(getImage("images/tiraficha.png"),600,100);
 		tcomer = new Sprite(getImage("images/comer.png"),0,0);
-
+		
 		//get all pieces into an array
 		
 		ArrayList<BufferedImage> imagesArray = new ArrayList<BufferedImage>();
@@ -175,7 +188,8 @@ public class Execute extends Game{
 	    	    	}
 	    		}
     		}catch(Exception e) {
-    			System.out.println("Ya no existe ficha en esas coordenadas");
+    			
+    			System.out.println(e+"Ya no existe ficha en esas coordenadas");
     		}
     		if(clickX >= (int) tcomer.getX() &&
         	   clickX <= (int) tcomer.getX() + tcomer.getWidth() &&
@@ -192,10 +206,24 @@ public class Execute extends Game{
 	    				inicialComidaY -=100;
 	    			}
 	    			playerFichas.add(fichas.remove(rand_index));
+	    			audioOk.play();
     			}catch(Exception e) {
+    				audioError.play(); 
     				System.out.println("Te has acabado las fichas, tragon!");
     			}
     		}
+    		
+			if(clickX >= (int) l.getX() && clickX <= l.getX()+l.getWidth() &&
+			   clickY >=0 && clickY <= l.getHeight()) {
+				choosed = 1;
+				System.out.println(choosed);
+			}
+			if(clickX >= (int) r.getX() && clickX <= r.getX()+r.getWidth() &&
+			   clickY >=0 && clickY <= r.getHeight()) {
+				choosed = 2;
+				System.out.println(choosed);
+			}
+    		
     	}
     	
     	for(Ficha ficha: enJuego) {
@@ -238,6 +266,9 @@ public class Execute extends Game{
     	
 	    }else {text = false;}
 	    
+	    l.update(elapsedTime);
+	    r.update(elapsedTime);
+	    
 	    if(text)s1.update(elapsedTime);
 	    
 	    tcomer.update(elapsedTime);
@@ -247,6 +278,9 @@ public class Execute extends Game{
     public void render(Graphics2D g) {
         // rendering to the screen
     	s1.render(g);
+    	
+    	l.render(g);
+	    r.render(g);
     	tcomer.render(g);
     	if(text)t1.render(g);
     	for(Ficha ficha: playerFichas) {
@@ -283,21 +317,33 @@ public class Execute extends Game{
     }
     
     private int isValid(LinkedList<Ficha> tablero,Ficha entrada) {
-    	
+    	ArrayList<Integer> validos = new ArrayList<Integer>();
     	if(tablero.getFirst().izq == entrada.der)//o sea que se puede ingresar al inicio 
-    		return 1; //1 indica que es movimiento valido a la izquierda
+    		validos.add(1); //1 indica que es movimiento valido a la izquierda
     	if(tablero.getFirst().izq == entrada.izq)
-    		return 2; //2 indica que es movimiento valido a la izquierda pero rotando la imagen
+    		validos.add(2); //2 indica que es movimiento valido a la izquierda pero rotando la imagen
     	if(tablero.getLast().der == entrada.izq)
-    		return 3; //3 indica que es movimiento valido a la derecha
+    		validos.add(3); //3 indica que es movimiento valido a la derecha
     	if(tablero.getLast().der == entrada.der)
-    		return 4; //3 indica que es movimiento valido a la derecha pero rotando la imagen
+    		validos.add(4); //4 indica que es movimiento valido a la derecha pero rotando la imagen
+    	
+    	if (validos.isEmpty()) return 0;
+    	if (validos.size() == 1) return validos.get(0);
+    	if (validos.size() == 2) {
+    		System.out.println("¿Insertar a la Izquierda o derecha?");
+    		if(choosed == 0) {
+    			System.out.print(".");
+    		}
+    		if(choosed == 1) return validos.get(0);
+    		else if(choosed == 2) return validos.get(1);
+    		
+    	}
     	return 0;
     }
     
 	
     
-    private void mover(long elapsedTime, int n) {
+    private void mover(long elapsedTime, int n){
     	System.out.println("Selecciona ficha " +n);
 		if(!enJuego.isEmpty()) {
 			switch(isValid(enJuego,playerFichas.get(n))) {
@@ -305,6 +351,7 @@ public class Execute extends Game{
 			case 0:
 				System.out.println("Movimiento no válido");
 				//play error sound
+				audioError.play(); 
 				break;
 			case 1:
 				System.out.println("Inserta a la izquierda");
@@ -334,6 +381,7 @@ public class Execute extends Game{
 					leftX = ingresaIzq_Der(enJuego,playerFichas,leftX,leftY,n);
 				}
 				System.out.println(pAtLeft);
+				audioOk.play();
 				pAtLeft ++; //cada vez aumenta para seguir el paso de cuantas hay cada lado
 				break;
 			case 2: 
@@ -364,6 +412,7 @@ public class Execute extends Game{
 					leftX = ingresaIzq_DerRotando(enJuego,playerFichas,leftX,leftY,n);
 				}
 				System.out.println(pAtLeft);
+				audioOk.play();
 				pAtLeft ++;
 				break;
 			case 3:
@@ -393,6 +442,7 @@ public class Execute extends Game{
 					rightX = ingresaDer_Izq(enJuego,playerFichas,rightX,rightY,n);
 				}
 				System.out.println(pAtRight);
+				audioOk.play();
 				pAtRight ++;
 				break;
 			case 4:
@@ -424,6 +474,7 @@ public class Execute extends Game{
 					rightX = ingresaDer_IzqRotando(enJuego,playerFichas,rightX,rightY,n);
 				}
 				System.out.println(pAtRight);
+				audioOk.play();
 				pAtRight++;
 				break;
 			}
@@ -437,9 +488,10 @@ public class Execute extends Game{
     				playerFichas.get(n).img_ficha.setLocation(newX, newY);
     				playerFichas.get(n).visible = false;
     				enJuego.addFirst(playerFichas.remove(n)); // saca la ficha para agregarla al inicio y además tiene que rotar la imagen
+    				audioOk.play();
 				}else {
 					System.out.println("Debes elegir a la mula mayor!");
-					//play error sound
+					audioError.play();
 				}
 			}else {
 				//no hay mula mayor
@@ -447,9 +499,10 @@ public class Execute extends Game{
 				playerFichas.get(n).img_ficha.setLocation(newX, newY);
 				playerFichas.get(n).visible = false;
 				enJuego.addFirst(playerFichas.remove(n));
+				audioOk.play();
 			}
 		}
-		
+		choosed = 0;
     }
     private int ingresaIzq(LinkedList<Ficha>tablero, ArrayList<Ficha> entrada, int x, int y, int n) {
 		x = x-entrada.get(n).img_ficha.getWidth();
